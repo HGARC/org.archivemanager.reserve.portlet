@@ -17,7 +17,7 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 
 
 @Controller
-@RequestMapping("/service/reserve")
+@RequestMapping("/reserve")
 public class DigitalReserveController {
 	private EntityService entityService;
 	private SearchService searchService;
@@ -26,7 +26,7 @@ public class DigitalReserveController {
 	@ResponseBody
 	@RequestMapping(value="/get.json", method = RequestMethod.GET)
 	public RestResponse<Object> fetchEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=false) long id) throws Exception {
+			@RequestParam(required=false) Long id) throws Exception {
 		RestResponse<Object> data = new RestResponse<Object>();
 		
 	

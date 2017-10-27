@@ -24,4 +24,26 @@
 			<taglib-location>/WEB-INF/tld/aui.tld</taglib-location>
 		</taglib>
 	</jsp-config>
+	<servlet>
+        <servlet-name>reserve</servlet-name>
+        <servlet-class>
+            com.liferay.portal.kernel.servlet.PortalDelegateServlet
+        </servlet-class>
+        <init-param>
+            <param-name>servlet-class</param-name>
+            <param-value>
+                org.springframework.web.servlet.DispatcherServlet
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>sub-context</param-name>
+            <param-value>reserve</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>reserve</servlet-name>
+        <url-pattern>/reserve/*</url-pattern>
+    </servlet-mapping>
 </web-app>
