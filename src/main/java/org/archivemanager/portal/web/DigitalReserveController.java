@@ -77,8 +77,8 @@ public class DigitalReserveController {
 				boolean yon = list.remove(ent);
 				return "DELETED: " + String.valueOf(yon);
 	}
-	
-	
+
+
 	public SearchService getSearchService() {
 		if(searchService == null) {
 			BeanLocator locator = PortletBeanLocatorUtil.getBeanLocator("archivemanager-portlet");
