@@ -31,7 +31,10 @@ public class DigitalReserveController {
 	List<Entity> list = new ArrayList<Entity>();
 	List<Long> list_id = new ArrayList<Long>();
 
-	Subjects subjectsList = new Subjects();
+	//@Autowired
+	User user;
+
+	//Subjects subjectsList = new Subjects();
 
   //a get request that returns all the current subjects
   @ResponseBody
@@ -83,7 +86,7 @@ public class DigitalReserveController {
 				entityService = getEntityService();
 				Entity ent = entityService.getEntity(id);
 				Subject updated = subjectsList.deleteItem(sub, ent);
-				return "updated to: " + "<br>"+ printSubject(deleted);
+				return "updated to: " + "<br>"+ printSubject();
 	}
 
 	//this method is just to make sure we have the entities.
@@ -108,7 +111,10 @@ public class DigitalReserveController {
 					SearchResult something = new SearchResult(ent);
 					result = result + "<br>" + something.getUid();
 				}
+				//RestResponse<Object> response = new RestResponse();
+
 				return result;
+
 	}
 
 //----------here are the helper methods------------

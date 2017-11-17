@@ -7,8 +7,8 @@ import org.heed.openapps.entity.Entity;
 
 public class Subjects{
 
-    int current;
-    List<Subject> listSub;
+    private int current;
+    private List<Subject> listSub;
 
     public Subjects(){
       int current = 0;
