@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.heed.openapps.entity.Entity;
 import org.heed.openapps.search.SearchResult;
+import org.heed.openapps.QName;
 
 import org.heed.openapps.data.RestResponse;
 import org.heed.openapps.entity.EntityService;
@@ -30,6 +31,62 @@ public class DigitalReserveController {
 	List<Entity> list = new ArrayList<Entity>();
 	List<Long> list_id = new ArrayList<Long>();
 
+	Subjects subjectsList = new Subjects();
+
+  //a get request that returns all the current subjects
+  @ResponseBody
+	@RequestMapping(value="/subject/view", method = RequestMethod.GET)
+  public String viewSubjects(){
+    List<Subject> subjects = subjectsList.getListSub();
+	  int len = subjects.size();
+		String result = "";
+		for(int i = 0; i < len; i++){
+			result = result + printSubject(subjects.get(i));
+		}
+		return result;
+  }
+
+  //returns the new made subject or just returns the corresponding subject
+	@ResponseBody
+  @RequestMapping(value="/subject/add", method = RequestMethod.GET)
+  public String addSubject(@RequestParam(required=true) String sub){
+    return printSubject(subjectsList.addSubject(sub));
+  }
+
+
+  //deletes a whole subject
+	@ResponseBody
+  @RequestMapping(value="/subject/delete", method = RequestMethod.GET)
+  public void deleteSubject(@RequestParam(required=true) String sub){
+    subjectsList.deleteSubject(sub);
+  }
+
+	//add entity to a subject
+	@ResponseBody
+	@RequestMapping(value="/subject/add.json", method = RequestMethod.GET)
+	public void addEntity(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(required=true) Long id,
+			@RequestParam(required=true) String sub) throws Exception {
+				//add the entity to the list
+				entityService = getEntityService();
+				Entity ent = entityService.getEntity(id);
+				subjectsList.addItem(sub, ent);
+	}
+
+  //delete the entity that belongs in a subject
+	@ResponseBody
+	@RequestMapping(value="/subject/delete.json", method = RequestMethod.GET)
+	public String deleteEntity(HttpServletRequest request, HttpServletResponse response,
+			@RequestParam(required=true) Long id,
+			@RequestParam(required=true) String sub) throws Exception {
+				//delete the entity to the list
+				entityService = getEntityService();
+				Entity ent = entityService.getEntity(id);
+				Subject deleted = subjectsList.deleteItem(sub, ent);
+				return "DELETED: " + printSubject(deleted);
+	}
+
+	//this method is just to make sure we have the entities.
 	@ResponseBody
 	@RequestMapping(value="/get.json", method = RequestMethod.GET)
 	public String getEntity(HttpServletRequest request, HttpServletResponse response,
@@ -49,35 +106,32 @@ public class DigitalReserveController {
 				for(int i = 0; i<len; i++){
 					Entity ent = list.get(i);
 					SearchResult something = new SearchResult(ent);
-					result = result + "\n" + something.getUid();
+					result = result + "<br>" + something.getUid();
 				}
 				return result;
 	}
 
-	@ResponseBody
-	@RequestMapping(value="/add.json", method = RequestMethod.GET)
-	public void addEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=true) Long id) throws Exception {
-				//add the entity to the list
-			if(!list_id.contains(id)){
-		    entityService = getEntityService();
-		    Entity ent = entityService.getEntity(id);
-				list.add(ent);
-				list_id.add(id);
-			}
+//-----here are the needed methods------
+
+	//a helper method to print the entities
+	public String printEntity(Entity ent){
+		String result = "UID: " + ent.getUid();
+		result = result + "<br>"+ "ID: " + Long.toString(ent.getId());
+		result = result + "<br>"+ "Name: " + ent.getName();
+		result = result + "<br>" + "Source: " + ent.getSource() + "\n";
+		result = result + "<br>" + "QName: " + ent.getQName();
+		return result+"<br>";
 	}
 
-	@ResponseBody
-	@RequestMapping(value="/delete.json", method = RequestMethod.GET)
-	public String deleteEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=true) Long id) throws Exception {
-				//delete the entity to the list
-        entityService = getEntityService();
-        Entity ent = entityService.getEntity(id);
-				boolean yon = list.remove(ent);
-				return "DELETED: " + String.valueOf(yon);
+	public String printSubject(Subject sub){
+		List<Entity> listEnt = sub.getList();
+		int len = listEnt.size();
+		String result = "SUBJECT: " + sub.getId();
+		for(int i = 0; i < len; i++){
+			result = result + "<br>" + printEntity(listEnt.get(i));
+		}
+		return result + "<br>";
 	}
-
 
 	public SearchService getSearchService() {
 		if(searchService == null) {
