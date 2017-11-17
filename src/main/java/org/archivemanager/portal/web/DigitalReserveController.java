@@ -82,8 +82,8 @@ public class DigitalReserveController {
 				//delete the entity to the list
 				entityService = getEntityService();
 				Entity ent = entityService.getEntity(id);
-				Subject deleted = subjectsList.deleteItem(sub, ent);
-				return "DELETED: " + printSubject(deleted);
+				Subject updated = subjectsList.deleteItem(sub, ent);
+				return "updated to: " + "<br>"+ printSubject(deleted);
 	}
 
 	//this method is just to make sure we have the entities.
@@ -111,9 +111,9 @@ public class DigitalReserveController {
 				return result;
 	}
 
-//-----here are the needed methods------
+//----------here are the helper methods------------
 
-	//a helper method to print the entities
+	//From Entity object to a String (i need json)
 	public String printEntity(Entity ent){
 		String result = "UID: " + ent.getUid();
 		result = result + "<br>"+ "ID: " + Long.toString(ent.getId());
@@ -123,6 +123,7 @@ public class DigitalReserveController {
 		return result+"<br>";
 	}
 
+	//From Subject Object to String (i need json)
 	public String printSubject(Subject sub){
 		List<Entity> listEnt = sub.getList();
 		int len = listEnt.size();
