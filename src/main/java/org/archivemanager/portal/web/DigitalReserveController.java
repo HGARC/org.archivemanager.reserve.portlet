@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.heed.openapps.entity.Entity;
 import org.heed.openapps.search.SearchResult;
 import org.heed.openapps.QName;
+import org.heed.openapps.User;
 
 import org.heed.openapps.data.RestResponse;
 import org.heed.openapps.entity.EntityService;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.Autowired;
 
 import com.liferay.portal.kernel.bean.BeanLocator;
 import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
@@ -31,8 +33,12 @@ public class DigitalReserveController {
 	List<Entity> list = new ArrayList<Entity>();
 	List<Long> list_id = new ArrayList<Long>();
 
-	//@Autowired
+	@Autowired
 	User user;
+
+	//User user = new User();
+
+	Useri dummy = new Useri(user.getUsername(), user.getEmail());
 
 	//Subjects subjectsList = new Subjects();
 
@@ -40,9 +46,10 @@ public class DigitalReserveController {
   @ResponseBody
 	@RequestMapping(value="/subject/view", method = RequestMethod.GET)
   public String viewSubjects(){
+		Subjects subjectsList = dummy.getSubjects();
     List<Subject> subjects = subjectsList.getListSub();
 	  int len = subjects.size();
-		String result = "";
+		String result = "For User: " + dummy.getUsername() + "<br>";
 		for(int i = 0; i < len; i++){
 			result = result + printSubject(subjects.get(i));
 		}
@@ -53,7 +60,7 @@ public class DigitalReserveController {
 	@ResponseBody
   @RequestMapping(value="/subject/add", method = RequestMethod.GET)
   public String addSubject(@RequestParam(required=true) String sub){
-    return printSubject(subjectsList.addSubject(sub));
+    return printSubject(dummy.addSubject(sub));
   }
 
 
@@ -61,7 +68,7 @@ public class DigitalReserveController {
 	@ResponseBody
   @RequestMapping(value="/subject/delete", method = RequestMethod.GET)
   public void deleteSubject(@RequestParam(required=true) String sub){
-    subjectsList.deleteSubject(sub);
+    dummy.deleteSubject(sub);
   }
 
 	//add entity to a subject
@@ -73,7 +80,7 @@ public class DigitalReserveController {
 				//add the entity to the list
 				entityService = getEntityService();
 				Entity ent = entityService.getEntity(id);
-				subjectsList.addItem(sub, ent);
+				dummy.addItem(sub, ent);
 	}
 
   //delete the entity that belongs in a subject
@@ -85,8 +92,8 @@ public class DigitalReserveController {
 				//delete the entity to the list
 				entityService = getEntityService();
 				Entity ent = entityService.getEntity(id);
-				Subject updated = subjectsList.deleteItem(sub, ent);
-				return "updated to: " + "<br>"+ printSubject();
+				Subject updated = dummy.deleteItem(sub, ent);
+				return "updated to: " + "<br>"+ printSubject(updated);
 	}
 
 	//this method is just to make sure we have the entities.
@@ -112,9 +119,7 @@ public class DigitalReserveController {
 					result = result + "<br>" + something.getUid();
 				}
 				//RestResponse<Object> response = new RestResponse();
-
 				return result;
-
 	}
 
 //----------here are the helper methods------------
