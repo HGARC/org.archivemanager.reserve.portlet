@@ -27,100 +27,100 @@ import com.liferay.portal.kernel.bean.PortletBeanLocatorUtil;
 @Controller
 @RequestMapping("/reserve")
 public class DigitalReserveController {
-	private EntityService entityService;
-	private SearchService searchService;
+    private EntityService entityService;
+    private SearchService searchService;
 
-	List<Entity> list = new ArrayList<Entity>();
-	List<Long> list_id = new ArrayList<Long>();
+    List<Entity> list = new ArrayList<Entity>();
+    List<Long> list_id = new ArrayList<Long>();
 
-	@Autowired
-	User user;
+    @Autowired
+    User user;
 
-	//User user = new User();
+    //User user = new User();
 
-	Useri dummy = new Useri(user.getUsername(), user.getEmail());
+    Useri dummy = new Useri(user.getUsername(), user.getEmail());
 
-	//Subjects subjectsList = new Subjects();
+    //Subjects subjectsList = new Subjects();
 
-  //a get request that returns all the current subjects
-  @ResponseBody
-	@RequestMapping(value="/subject/view", method = RequestMethod.GET)
-  public String viewSubjects(){
-		Subjects subjectsList = dummy.getSubjects();
-    List<Subject> subjects = subjectsList.getListSub();
-	  int len = subjects.size();
-		String result = "For User: " + dummy.getUsername() + "<br>";
-		for(int i = 0; i < len; i++){
-			result = result + printSubject(subjects.get(i));
-		}
-		return result;
-  }
+    //a get request that returns all the current subjects
+    @ResponseBody
+    @RequestMapping(value="/subject/view", method = RequestMethod.GET)
+    public String viewSubjects(){
+        Subjects subjectsList = dummy.getSubjects();
+        List<Subject> subjects = subjectsList.getListSub();
+        int len = subjects.size();
+        String result = "For User: " + dummy.getUsername() + "<br>";
+        for(int i = 0; i < len; i++){
+            result = result + printSubject(subjects.get(i));
+        }
+        return result;
+    }
 
-  //returns the new made subject or just returns the corresponding subject
-	@ResponseBody
-  @RequestMapping(value="/subject/add", method = RequestMethod.GET)
-  public String addSubject(@RequestParam(required=true) String sub){
-    return printSubject(dummy.addSubject(sub));
-  }
+    //returns the new made subject or just returns the corresponding subject
+    @ResponseBody
+    @RequestMapping(value="/subject/add", method = RequestMethod.GET)
+    public String addSubject(@RequestParam(required=true) String sub){
+        return printSubject(dummy.addSubject(sub));
+    }
 
 
-  	//deletes a whole subject
-	@ResponseBody
-  @RequestMapping(value="/subject/delete", method = RequestMethod.GET)
-  public void deleteSubject(@RequestParam(required=true) String sub){
-    dummy.deleteSubject(sub);
-  }
+    //deletes a whole subject
+    @ResponseBody
+    @RequestMapping(value="/subject/delete", method = RequestMethod.GET)
+    public void deleteSubject(@RequestParam(required=true) String sub){
+        dummy.deleteSubject(sub);
+    }
 
-	//add entity to a subject
-	@ResponseBody
-	@RequestMapping(value="/subject/add.json", method = RequestMethod.GET)
-	public void addEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=true) Long id,
-			@RequestParam(required=true) String sub) throws Exception {
-				//add the entity to the list
-				entityService = getEntityService();
-				Entity ent = entityService.getEntity(id);
-				dummy.addItem(sub, ent);
-	}
+    //add entity to a subject
+    @ResponseBody
+    @RequestMapping(value="/subject/add.json", method = RequestMethod.GET)
+    public void addEntity(HttpServletRequest request, HttpServletResponse response,
+                          @RequestParam(required=true) Long id,
+                          @RequestParam(required=true) String sub) throws Exception {
+        //add the entity to the list
+        entityService = getEntityService();
+        Entity ent = entityService.getEntity(id);
+        dummy.addItem(sub, ent);
+    }
 
-  	//delete the entity that belongs in a subject
-	@ResponseBody
-	@RequestMapping(value="/subject/delete.json", method = RequestMethod.GET)
-	public String deleteEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=true) Long id,
-			@RequestParam(required=true) String sub) throws Exception {
-				//delete the entity to the list
-				entityService = getEntityService();
-				Entity ent = entityService.getEntity(id);
-				Subject updated = dummy.deleteItem(sub, ent);
-				return "updated to: " + "<br>"+ printSubject(updated);
-	}
+    //delete the entity that belongs in a subject
+    @ResponseBody
+    @RequestMapping(value="/subject/delete.json", method = RequestMethod.GET)
+    public String deleteEntity(HttpServletRequest request, HttpServletResponse response,
+                               @RequestParam(required=true) Long id,
+                               @RequestParam(required=true) String sub) throws Exception {
+        //delete the entity to the list
+        entityService = getEntityService();
+        Entity ent = entityService.getEntity(id);
+        Subject updated = dummy.deleteItem(sub, ent);
+        return "updated to: " + "<br>"+ printSubject(updated);
+    }
 
-	//this method is just to make sure we have the entities.
-	@ResponseBody
-	@RequestMapping(value="/get.json", method = RequestMethod.GET)
-	public String getEntity(HttpServletRequest request, HttpServletResponse response,
-			@RequestParam(required=false) Long id) throws Exception {
-				//add an the entity if provided an id
-				if(id != null){
-					if(!list_id.contains(id)){
-						entityService = getEntityService();
-						Entity ent = entityService.getEntity(id);
-						list.add(ent);
-						list_id.add(id);
-					}
-				}
-				//return the current list of entities' uid's after iterating through them
-				int len = list.size();
-				String result = "";
-				for(int i = 0; i<len; i++){
-					Entity ent = list.get(i);
-					SearchResult something = new SearchResult(ent);
-					result = result + "<br>" + something.getUid();
-				}
-				//RestResponse<Object> response = new RestResponse();
-				return result;
-	}
+    //this method is just to make sure we have the entities.
+    @ResponseBody
+    @RequestMapping(value="/get.json", method = RequestMethod.GET)
+    public String getEntity(HttpServletRequest request, HttpServletResponse response,
+                            @RequestParam(required=false) Long id) throws Exception {
+        //add an the entity if provided an id
+        if(id != null){
+            if(!list_id.contains(id)){
+                entityService = getEntityService();
+                Entity ent = entityService.getEntity(id);
+                list.add(ent);
+                list_id.add(id);
+            }
+        }
+        //return the current list of entities' uid's after iterating through them
+        int len = list.size();
+        String result = "";
+        for(int i = 0; i<len; i++){
+            Entity ent = list.get(i);
+            SearchResult something = new SearchResult(ent);
+            result = result + "<br>" + something.getUid();
+        }
+        //RestResponse<Object> response = new RestResponse();
+        return result;
+    }
 
 //----------here are the helper methods------------
 
