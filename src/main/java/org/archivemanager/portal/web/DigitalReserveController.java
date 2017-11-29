@@ -64,7 +64,7 @@ public class DigitalReserveController {
   }
 
 
-  //deletes a whole subject
+  	//deletes a whole subject
 	@ResponseBody
   @RequestMapping(value="/subject/delete", method = RequestMethod.GET)
   public void deleteSubject(@RequestParam(required=true) String sub){
@@ -83,7 +83,7 @@ public class DigitalReserveController {
 				dummy.addItem(sub, ent);
 	}
 
-  //delete the entity that belongs in a subject
+  	//delete the entity that belongs in a subject
 	@ResponseBody
 	@RequestMapping(value="/subject/delete.json", method = RequestMethod.GET)
 	public String deleteEntity(HttpServletRequest request, HttpServletResponse response,
@@ -148,16 +148,18 @@ public class DigitalReserveController {
 	public SearchService getSearchService() {
 		if(searchService == null) {
 			BeanLocator locator = PortletBeanLocatorUtil.getBeanLocator("archivemanager-portlet");
-			if(locator != null)
+			if(locator != null){
 				searchService = (SearchService)locator.locate("searchService");
+			}
 		}
 		return searchService;
 	}
 	public EntityService getEntityService() {
 		if(entityService == null) {
 			BeanLocator locator = PortletBeanLocatorUtil.getBeanLocator("archivemanager-portlet");
-			if(locator != null)
+			if(locator != null) {
 				entityService = (EntityService)locator.locate("entityService");
+			}
 		}
 		return entityService;
 	}
