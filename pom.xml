@@ -88,7 +88,7 @@
 			<version>2.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
@@ -118,7 +118,7 @@
 			<groupId>stax</groupId>
 			<artifactId>stax-api</artifactId>
 			<version>1.0.1</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
 			<artifactId>xmlbeans</artifactId>
@@ -145,7 +145,7 @@
 			<groupId>commons-logging</groupId>
 			<artifactId>commons-logging</artifactId>
 			<version>1.2</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
@@ -160,7 +160,7 @@
 			<groupId>org.aspectj</groupId>
 			<artifactId>aspectjrt</artifactId>
 			<version>1.8.5</version>
-		</dependency>		
+		</dependency>
 		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
@@ -171,7 +171,7 @@
 			<artifactId>commons-lang</artifactId>
 			<version>2.6</version>
 		</dependency>
-					
+
 		<dependency>
 			<groupId>org.archivemanager</groupId>
 			<artifactId>org.archivemanager.core.api</artifactId>
@@ -184,7 +184,6 @@
 			<version>3.0.0</version>
 			<scope>provided</scope>
 		</dependency>
-		
 	</dependencies>
 	<repositories>
 		<repository>
@@ -197,6 +196,6 @@
 		  <snapshots>
 		    <enabled>true</enabled>
 		  </snapshots>
-		</repository> 
+		</repository>
 	</repositories>
 </project>
