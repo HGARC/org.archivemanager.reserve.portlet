@@ -4,8 +4,6 @@
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@page contentType="text/html;charset=UTF-8"%>
 
-<portlet:defineObjects />
-<liferay-theme:defineObjects />
 <%
 String themeImagePath = themeDisplay.getPathThemeImages();
 %>
@@ -29,37 +27,6 @@ String themeImagePath = themeDisplay.getPathThemeImages();
 
       var client = new HttpClient();
 
-      //add item
-      var addItem = function(sub, id){
-        client.get("http://hgar-srv2.bu.edu/delegate/reserve/subject/add.json?sub="+sub+"&id="+id, function(response) {
-            console.log("great");
-        });
-      }
-
-      //delete item
-      var deleteItem = function(sub, id){
-        var client = new HttpClient();
-        client.get("http://hgar-srv2.bu.edu/delegate/reserve/subject/delete.json?sub="+sub+"&id="+id, function(response) {
-            console.log("great");
-        });
-      }
-
-      //add subject
-      var addSubject = function(sub){
-        var client = new HttpClient();
-        client.get("http://hgar-srv2.bu.edu/delegate/reserve/subject/add?sub="+sub, function(response) {
-            console.log("great");
-        });
-      }
-
-      //delete subject
-      var deleteSubject = function(sub){
-        client.get("http://hgar-srv2.bu.edu/delegate/reserve/subject/delete?sub="+sub, function(response) {
-            console.log("great");
-        });
-      }
-
-      //
        var getSaved = function(){
          client.get("http://hgar-srv2.bu.edu/delegate/reserve/subject/view", function(response) {
            var obj = jQuery.parseJSON(response);
@@ -94,7 +61,7 @@ String themeImagePath = themeDisplay.getPathThemeImages();
 
     <p>IDS set is <%=request.getAttribute("ids")%></p>
 
-    <p>TEACHER'S REPOS</p>
+    <p>Student's Saved items</p>
     <p id="demo">Displaying...</p>
 
     <button type="button" onclick="getSaved()">Display</button>
