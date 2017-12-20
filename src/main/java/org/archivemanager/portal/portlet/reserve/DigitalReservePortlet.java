@@ -24,6 +24,7 @@ import org.heed.openapps.search.SearchNode;
 import org.heed.openapps.search.SearchRequest;
 import org.heed.openapps.search.SearchResponse;
 import org.heed.openapps.search.SearchResult;
+//import org.heed.openapps.User;
 
 import com.liferay.portal.kernel.log.Log;
 import com.liferay.portal.kernel.log.LogFactoryUtil;
@@ -35,6 +36,7 @@ import com.liferay.portal.security.permission.PermissionThreadLocal;
 import com.liferay.portal.theme.ThemeDisplay;
 import com.liferay.portal.model.User;
 import com.liferay.portal.model.UserGroup;
+import com.liferay.portal.kernel.util.Accessor;
 
 import java.util.List;
 
@@ -54,31 +56,33 @@ public class DigitalReservePortlet extends PortletSupport {
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
-		//ThemeDisplay themeDisplay = (ThemeDisplay) renderRequest.getAttribute(WebKeys.THEME_DISPLAY);
 		User user = themeDisplay.getUser();
-		String ids = "here: ";
+		String ids = "";
+		String name = "unknown";
 		try{
 			List<UserGroup> list = user.getUserGroups();
+			name = user.getFullName();
 			for(int i =0; i < list.size(); i++){
-				long grp = list.get(i).getGroupId();
-				ids += " " +  Long.toString(grp) + "\n";
+				Accessor<UserGroup,String> acc = list.get(i).NAME_ACCESSOR;
+				String grp = acc.get(list.get(i));
+				ids += grp;
 			}
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
-		//pass the ids
-		renderRequest.setAttribute("ids", ids);
-		include("/jsp/viewer.jsp", renderRequest, renderResponse);
 
-		// if(ids == teacherID){
-		//  //pass name and everything in the future
-		// 	renderRequest.setAttribute("ids", ids);
-		// 	include("/jsp/viewer.jsp", renderRequest, renderResponse);
-		// }else if(ids == studentID){
-		// //pass name and everything in the future
-		// 	renderRequest.setAttribute("ids", ids);
-		// 	include("/jsp/view.jsp", renderRequest, renderResponse);
-		// }
+		if(ids.equals("Educators")){
+		 //pass name and everything in the future
+			renderRequest.setAttribute("name", name);
+			include("/jsp/viewer.jsp", renderRequest, renderResponse);
+		}else if(ids.equals("Students")){
+		//pass name and everything in the future
+			renderRequest.setAttribute("name", name);
+			include("/jsp/view.jsp", renderRequest, renderResponse);
+		} else {
+			renderRequest.setAttribute("name", name);
+			include("/jsp/viewUnknown.jsp", renderRequest, renderResponse);
+		}
 	}
 
 	protected void include(String path, RenderRequest renderRequest, RenderResponse renderResponse)	throws IOException, PortletException {

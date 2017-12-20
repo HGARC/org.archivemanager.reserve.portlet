@@ -92,13 +92,12 @@ String themeImagePath = themeDisplay.getPathThemeImages();
 
   <body>
 
-    <p>IDS set is <%=request.getAttribute("ids")%></p>
+    <p>Welcome <%=request.getAttribute("name")%></p>
 
-    <p>TEACHER'S REPOS</p>
+    <p>Your previously saved items</p>
     <p id="demo">Displaying...</p>
 
     <button type="button" onclick="getSaved()">Display</button>
 
   </body>
-
-</html>
+ </html>

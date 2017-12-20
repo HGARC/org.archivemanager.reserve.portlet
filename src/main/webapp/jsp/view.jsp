@@ -4,6 +4,8 @@
 <%@ taglib uri="http://liferay.com/tld/ui" prefix="liferay-ui" %>
 <%@page contentType="text/html;charset=UTF-8"%>
 
+<portlet:defineObjects />
+<liferay-theme:defineObjects />
 <%
 String themeImagePath = themeDisplay.getPathThemeImages();
 %>
@@ -59,7 +61,7 @@ String themeImagePath = themeDisplay.getPathThemeImages();
 
   <body>
 
-    <p>IDS set is <%=request.getAttribute("ids")%></p>
+    <p>Welcome <%=request.getAttribute("name")%></p>
 
     <p>Student's Saved items</p>
     <p id="demo">Displaying...</p>
